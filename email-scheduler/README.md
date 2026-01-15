@@ -327,7 +327,16 @@ The demo video should show:
 - CORS protection
 - Input validation with express-validator
 - SQL injection protection via TypeORM
-- Rate limiting to prevent abuse
+- Application-level rate limiting to prevent email abuse
+
+**Security Notes for Production:**
+- Add CSRF protection (e.g., csurf middleware) for forms
+- Add API rate limiting (e.g., express-rate-limit) to prevent DDoS
+- Use Redis session store instead of memory store
+- Enable HTTPS/TLS for all connections
+- Implement request signing or API keys for external integrations
+- Add comprehensive audit logging
+- Use environment-based secrets management (AWS Secrets Manager, HashiCorp Vault)
 
 ## 🚀 Production Deployment
 
