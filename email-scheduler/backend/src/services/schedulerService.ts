@@ -59,6 +59,9 @@ export class SchedulerService {
 
   /**
    * Schedule multiple emails from CSV
+   * Note: Checks rate limit for each email during scheduling to provide
+   * accurate schedule times. For very large batches (1000+), this could
+   * be optimized by checking once and calculating schedules locally.
    */
   async scheduleEmailsFromCSV(
     csvContent: string,

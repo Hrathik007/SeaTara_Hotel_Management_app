@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_DATABASE || 'email_scheduler',
-  synchronize: true, // Set to false in production
+  synchronize: process.env.NODE_ENV !== 'production', // Auto-sync only in development
   logging: process.env.NODE_ENV === 'development',
   entities: [Email, User],
   subscribers: [],

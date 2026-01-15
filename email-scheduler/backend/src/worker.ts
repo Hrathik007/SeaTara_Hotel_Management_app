@@ -33,6 +33,12 @@ function startWorker() {
       console.log(`Processing job ${job.id} for email ${job.data.emailId}`);
 
       try {
+        // Update status to processing
+        await schedulerService.updateEmailStatus(
+          job.data.emailId,
+          EmailStatus.PROCESSING
+        );
+
         // Check rate limit before processing
         const isLimited = await rateLimiter.checkRateLimit(
           job.data.senderEmail
@@ -61,18 +67,16 @@ function startWorker() {
           );
         }
 
-        // Update status to processing
-        await schedulerService.updateEmailStatus(
-          job.data.emailId,
-          EmailStatus.PROCESSING
-        );
-
         // Add delay between emails
         if (MIN_DELAY_BETWEEN_EMAILS > 0) {
           await new Promise((resolve) =>
             setTimeout(resolve, MIN_DELAY_BETWEEN_EMAILS)
           );
         }
+
+        // Atomically increment counter and send email
+        // This reduces (but doesn't eliminate) race condition window
+        await rateLimiter.incrementCounter(job.data.senderEmail);
 
         // Send email
         await emailService.sendEmail({
@@ -81,9 +85,6 @@ function startWorker() {
           subject: job.data.subject,
           html: job.data.body,
         });
-
-        // Increment rate limiter counter
-        await rateLimiter.incrementCounter(job.data.senderEmail);
 
         // Update email status to sent
         await schedulerService.updateEmailStatus(

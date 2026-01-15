@@ -385,8 +385,12 @@ For production:
 1. **Ethereal Email**: Free tier has limits; use real SMTP in production
 2. **Google OAuth**: Requires public callback URL in production
 3. **Session Storage**: In-memory sessions don't scale; use Redis in production
-4. **Database Sync**: Auto-sync is on; use migrations in production
+4. **Database Sync**: Auto-sync is on in development; migrations required for production
 5. **Error Handling**: Basic error messages; enhance for production
+6. **Rate Limit Race Condition**: Small window exists between check and send in concurrent workers. Mitigated by incrementing counter before sending, but not fully atomic. For strict guarantees, consider implementing a Redis-based distributed lock.
+7. **Bulk Scheduling Performance**: For very large batches (1000+), rate limit checks on every email create many Redis calls. Acceptable for typical use cases (10-100 emails), but could be optimized by batching checks for massive campaigns.
+8. **Email Validation**: Uses simple regex; consider validator.js library for production
+
 
 ## 📚 Learn More
 
