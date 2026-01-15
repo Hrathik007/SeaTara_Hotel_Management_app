@@ -1,0 +1,155 @@
+{
+  "info": {
+    "name": "Email Scheduler API",
+    "description": "API collection for Email Scheduler service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/auth/user",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["auth", "user"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/auth/logout",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Emails",
+      "item": [
+        {
+          "name": "Schedule Single Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipientEmail\": \"test@example.com\",\n  \"subject\": \"Test Email\",\n  \"body\": \"<h1>Hello!</h1><p>This is a test email.</p>\",\n  \"senderEmail\": \"sender@example.com\",\n  \"scheduledTime\": \"2024-01-20T10:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/emails/schedule",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "emails", "schedule"]
+            }
+          }
+        },
+        {
+          "name": "Schedule Bulk Emails",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"csvContent\": \"user1@example.com\\nuser2@example.com\\nuser3@example.com\",\n  \"subject\": \"Bulk Email Test\",\n  \"body\": \"<h1>Hello!</h1><p>This is a bulk email.</p>\",\n  \"senderEmail\": \"sender@example.com\",\n  \"startTime\": \"2024-01-20T10:00:00Z\",\n  \"delayBetweenEmails\": 2000\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/emails/schedule-bulk",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "emails", "schedule-bulk"]
+            }
+          }
+        },
+        {
+          "name": "Get Scheduled Emails",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/emails/scheduled",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "emails", "scheduled"]
+            }
+          }
+        },
+        {
+          "name": "Get Sent Emails",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/emails/sent",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "emails", "sent"]
+            }
+          }
+        },
+        {
+          "name": "Get Email by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/emails/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "emails", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "your-email-id-here"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["health"]
+        }
+      }
+    }
+  ]
+}
