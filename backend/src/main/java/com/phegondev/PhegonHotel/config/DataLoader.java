@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.math.BigDecimal;
 
 @Configuration
-@Profile("local") // Only run this for local profile (H2 database)
+@Profile({"local", "prod"}) // Run for both local and production
 public class DataLoader {
 
     @Autowired
