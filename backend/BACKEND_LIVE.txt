@@ -1,0 +1,157 @@
+╔════════════════════════════════════════════════════════════════════════╗
+║          🎉 BACKEND SUCCESSFULLY DEPLOYED ON RENDER! 🎉                  ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+✅ YOUR BACKEND IS LIVE AND RUNNING!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📍 BACKEND URL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+https://sitara-hotel-backend.onrender.com
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔗 API ENDPOINTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Base URL: https://sitara-hotel-backend.onrender.com
+
+AUTHENTICATION:
+  POST /auth/register - Register new user
+  POST /auth/login    - Login and get JWT token
+
+USERS:
+  GET    /users/all                 - Get all users (Admin only)
+  GET    /users/get-by-id/{userId}  - Get user by ID
+  GET    /users/get-logged-in-profile-info - Get current user
+  DELETE /users/delete/{userId}     - Delete user (Admin only)
+
+ROOMS:
+  GET    /rooms/all                 - Get all rooms
+  GET    /rooms/types               - Get room types
+  GET    /rooms/room-by-id/{roomId} - Get room details
+  GET    /rooms/available-rooms-by-date-and-type - Search available rooms
+  POST   /rooms/add                 - Add new room (Admin only)
+  PUT    /rooms/update/{roomId}     - Update room (Admin only)
+  DELETE /rooms/delete/{roomId}     - Delete room (Admin only)
+
+BOOKINGS:
+  GET    /bookings/all              - Get all bookings (Admin only)
+  GET    /bookings/get-by-confirmation-code/{code} - Get booking
+  POST   /bookings/book-room/{roomId}/{userId} - Create booking
+  DELETE /bookings/cancel/{bookingId} - Cancel booking
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 TEST YOUR API (Copy & Paste in Terminal)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣ REGISTER ADMIN USER:
+────────────────────────────────────────────────────────────────────────
+curl -X POST https://sitara-hotel-backend.onrender.com/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@sitara.com",
+    "name": "Admin User",
+    "phoneNumber": "1234567890",
+    "password": "admin123",
+    "role": "ADMIN"
+  }'
+
+
+2️⃣ LOGIN:
+────────────────────────────────────────────────────────────────────────
+curl -X POST https://sitara-hotel-backend.onrender.com/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@sitara.com",
+    "password": "admin123"
+  }'
+
+
+3️⃣ GET ALL ROOMS (Public):
+────────────────────────────────────────────────────────────────────────
+curl https://sitara-hotel-backend.onrender.com/rooms/all
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 FRONTEND CONFIGURATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In your frontend project (VS Code), create/update .env file:
+
+FOR REACT (Create React App):
+────────────────────────────────────────────────────────────────────────
+REACT_APP_API_URL=https://sitara-hotel-backend.onrender.com
+
+
+FOR VITE (React + Vite):
+────────────────────────────────────────────────────────────────────────
+VITE_API_URL=https://sitara-hotel-backend.onrender.com
+
+
+FOR NEXT.JS:
+────────────────────────────────────────────────────────────────────────
+NEXT_PUBLIC_API_URL=https://sitara-hotel-backend.onrender.com
+
+
+Then in your frontend code, use:
+
+// For Create React App
+const API_URL = process.env.REACT_APP_API_URL;
+
+// For Vite
+const API_URL = import.meta.env.VITE_API_URL;
+
+// For Next.js
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+// Example API call
+fetch(`${API_URL}/auth/login`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email: 'admin@sitara.com', password: 'admin123' })
+})
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ IMPORTANT: RENDER FREE TIER NOTES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 AUTO-SLEEP BEHAVIOR:
+  - Your service sleeps after 15 minutes of inactivity
+  - First request after sleep takes 30-60 seconds to wake up
+  - Subsequent requests are instant
+
+💡 KEEP IT AWAKE (Optional):
+  Use UptimeRobot to ping your backend every 5 minutes:
+
+  1. Go to: https://uptimerobot.com
+  2. Sign up (free)
+  3. Add monitor: https://sitara-hotel-backend.onrender.com/actuator/health
+  4. Set interval: 5 minutes
+  5. Your backend stays awake 24/7!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ DEPLOYMENT SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Backend: https://sitara-hotel-backend.onrender.com
+✓ Database: Aiven MySQL (with SSL)
+✓ Authentication: JWT enabled
+✓ CORS: Configured
+✓ Health Check: /actuator/health
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. ✅ Test the API endpoints above
+2. ✅ Configure your frontend with the backend URL
+3. ✅ Deploy your frontend (Vercel/Netlify)
+4. ✅ (Optional) Set up UptimeRobot to keep backend awake
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎊 CONGRATULATIONS! YOUR BACKEND IS LIVE! 🎊
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Need help deploying your frontend? Just let me know!
+
