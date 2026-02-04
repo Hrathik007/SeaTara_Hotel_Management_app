@@ -1,0 +1,179 @@
+╔════════════════════════════════════════════════════════════════════════╗
+║                   🚂 RAILWAY DEPLOYMENT - QUICK GUIDE                    ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+✅ STEP 1: YOUR CODE IS READY!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ Code pushed to GitHub: https://github.com/Hrathik007/SeaTara_Hotel_Management_app
+✓ All Railway files created
+✓ MySQL configuration ready
+✓ Docker setup complete
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 STEP 2: DEPLOY ON RAILWAY (5 MINUTES)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1️⃣  GO TO RAILWAY
+    → Open: https://railway.app
+    → Click "Login" → Sign in with GitHub
+    → Authorize Railway
+
+2️⃣  CREATE MYSQL DATABASE
+    → Click "+ New"
+    → Select "Database"
+    → Choose "MySQL"
+    → Click "Add MySQL"
+    → ✅ Railway creates database automatically
+
+3️⃣  DEPLOY YOUR BACKEND
+    → Click "+ New" again
+    → Select "GitHub Repo"
+    → Find "SeaTara_Hotel_Management_app"
+    → Click on it
+    → Railway will auto-detect Dockerfile and start building
+
+4️⃣  ADD ENVIRONMENT VARIABLES
+    → Click on your deployed service
+    → Go to "Variables" tab
+    → Click "New Variable" and add:
+
+    SPRING_PROFILES_ACTIVE
+    railway
+
+    JWT_SECRET
+    lxp8L0y7eotsrZ2atleYIar4Cf/ojLBRsyg8o+39IGIlvQN2Gw1I/COoLcrTgdJaFWQcguC4Ug1YBIGl7G1B4g==
+
+    (Railway automatically provides MySQL variables - no need to add them!)
+
+5️⃣  GENERATE PUBLIC URL
+    → Go to "Settings" tab
+    → Scroll to "Networking" section
+    → Click "Generate Domain"
+    → You'll get: https://sitara-hotel-backend.up.railway.app
+
+6️⃣  WAIT FOR DEPLOYMENT
+    → Go to "Deployments" tab
+    → Watch the build logs
+    → Wait for "SUCCESS" status (2-3 minutes)
+    → ✅ Your backend is LIVE!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 STEP 3: TEST YOUR DEPLOYMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Replace YOUR-APP-URL with your actual Railway URL:
+
+# Check if backend is running
+curl https://YOUR-APP-URL.up.railway.app/actuator/health
+
+# Should return: {"status":"UP"}
+
+# Test registration (creates admin user)
+curl -X POST https://YOUR-APP-URL.up.railway.app/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@sitara.com",
+    "name": "Admin User",
+    "phoneNumber": "1234567890",
+    "password": "admin123",
+    "role": "ADMIN"
+  }'
+
+# Test login
+curl -X POST https://YOUR-APP-URL.up.railway.app/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@sitara.com",
+    "password": "admin123"
+  }'
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📱 STEP 4: CONNECT YOUR FRONTEND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In your frontend project (VS Code), create/update .env file:
+
+REACT_APP_API_URL=https://YOUR-APP-URL.up.railway.app
+VITE_API_URL=https://YOUR-APP-URL.up.railway.app
+
+(Use REACT_APP_ for Create React App, VITE_ for Vite)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💰 RAILWAY PRICING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Free Tier: $5 credit/month
+Your app usage: ~$0.15-0.20/day
+Estimated: 25+ days free per month
+
+If you exceed, you can add a credit card for pay-as-you-go.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔄 AUTO-DEPLOY ON PUSH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Every time you push to GitHub:
+
+git add .
+git commit -m "Updated feature"
+git push
+
+Railway automatically:
+1. Detects the push
+2. Builds new Docker image
+3. Deploys with zero downtime
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 YOUR BACKEND URLS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Main URL: https://YOUR-APP.up.railway.app
+Health: https://YOUR-APP.up.railway.app/actuator/health
+
+API Endpoints:
+POST /auth/register - Register user
+POST /auth/login - Login
+GET  /rooms/all - Get all rooms
+POST /rooms/add - Add room (admin)
+GET  /bookings/all - Get bookings (admin)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🐛 TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Build Failed?
+→ Check "Deployments" tab → Click failed deployment → View logs
+
+App Crashes?
+→ Check if MySQL service is running
+→ Verify environment variables are set
+→ Check logs for errors
+
+Database Connection Failed?
+→ MySQL takes 30 seconds to start
+→ Make sure MySQL service is in same project
+→ Railway auto-links them
+
+Can't Access?
+→ Make sure domain is generated in Settings → Networking
+→ Check if deployment shows "SUCCESS"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📚 HELPFUL FILES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+RAILWAY_DEPLOY.md - Complete detailed guide
+.env.railway - Environment variables reference
+railway.json - Railway configuration
+Dockerfile - Container configuration
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 READY TO DEPLOY!
+
+Start at: https://railway.app
+
+Questions? Check RAILWAY_DEPLOY.md for detailed guide!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
