@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import ApiService from "../../service/ApiService";
 
 function LoginPage() {
@@ -61,7 +61,7 @@ function LoginPage() {
             </form>
 
             <p className="register-link">
-                Don't have an account? <a href="/register">Register</a>
+                Don't have an account? <Link to="/register">Register</Link>
             </p>
         </div>
     );
