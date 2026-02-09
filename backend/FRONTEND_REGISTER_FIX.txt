@@ -1,0 +1,265 @@
+╔════════════════════════════════════════════════════════════════════════╗
+║          🔧 FRONTEND REGISTER NOT WORKING - TROUBLESHOOTING              ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+✅ BACKEND IS WORKING! Register endpoint tested successfully.
+❌ Issue is in FRONTEND configuration or API call.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 COMMON ISSUES & FIXES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ISSUE #1: Frontend not using the correct backend URL
+────────────────────────────────────────────────────────────────────────
+
+FIX: In your frontend project (VS Code), create/update .env file:
+
+# For React (Create React App):
+REACT_APP_API_URL=https://sitara-hotel-backend.onrender.com
+
+# For Vite:
+VITE_API_URL=https://sitara-hotel-backend.onrender.com
+
+# For Next.js:
+NEXT_PUBLIC_API_URL=https://sitara-hotel-backend.onrender.com
+
+⚠️  IMPORTANT: After creating/updating .env:
+1. STOP your dev server (Ctrl+C)
+2. RESTART: npm start (or npm run dev)
+
+
+ISSUE #2: Frontend code not reading .env correctly
+────────────────────────────────────────────────────────────────────────
+
+FIX: Check your API service file. It should look like:
+
+// For Create React App:
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4040';
+
+// For Vite:
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4040';
+
+// For Next.js:
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4040';
+
+
+ISSUE #3: Wrong API endpoint path
+────────────────────────────────────────────────────────────────────────
+
+FIX: Make sure your register API call uses:
+
+POST ${API_URL}/auth/register
+
+NOT:
+❌ /api/auth/register
+❌ /register
+❌ /user/register
+
+
+ISSUE #4: Missing or incorrect headers
+────────────────────────────────────────────────────────────────────────
+
+FIX: Your register API call should have these headers:
+
+fetch(`${API_URL}/auth/register`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  },
+  body: JSON.stringify({
+    email: email,
+    name: name,
+    phoneNumber: phoneNumber,
+    password: password,
+    role: 'USER'  // or 'ADMIN'
+  })
+})
+
+
+ISSUE #5: CORS error in browser console
+────────────────────────────────────────────────────────────────────────
+
+CHECK: Open browser DevTools (F12) → Console tab
+Look for errors like:
+  "CORS policy: No 'Access-Control-Allow-Origin' header"
+
+FIX: This should already be fixed in the latest backend deployment.
+Wait for Render deployment to complete.
+
+
+ISSUE #6: Request payload format is wrong
+────────────────────────────────────────────────────────────────────────
+
+FIX: Make sure your request body includes ALL required fields:
+
+{
+  "email": "user@example.com",      // REQUIRED
+  "name": "Full Name",               // REQUIRED
+  "phoneNumber": "1234567890",       // REQUIRED
+  "password": "password123",         // REQUIRED
+  "role": "USER"                     // REQUIRED (USER or ADMIN)
+}
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 TEST THE BACKEND DIRECTLY (Verify it's working)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Run this in your terminal:
+
+curl -X POST https://sitara-hotel-backend.onrender.com/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "name": "Test User",
+    "phoneNumber": "1234567890",
+    "password": "test123",
+    "role": "USER"
+  }'
+
+✅ If you get a 200 response with user data → Backend works!
+❌ If you get an error → Backend issue (check Render logs)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔧 DEBUGGING STEPS IN FRONTEND (VS Code)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: Open Browser DevTools (F12)
+───────────────────────────────────
+1. Go to your registration page
+2. Open DevTools (F12 or right-click → Inspect)
+3. Go to "Console" tab
+4. Click "Register" button
+5. Look for errors
+
+
+STEP 2: Check Network Tab
+──────────────────────────
+1. In DevTools, go to "Network" tab
+2. Click "Register" button
+3. Look for the POST request to /auth/register
+4. Click on it to see:
+   - Request URL (should be https://sitara-hotel-backend.onrender.com/auth/register)
+   - Request Headers
+   - Request Payload
+   - Response
+
+
+STEP 3: Add Console Logs
+─────────────────────────
+In your register function, add:
+
+console.log('API_URL:', API_URL);
+console.log('Register endpoint:', `${API_URL}/auth/register`);
+console.log('Request payload:', { email, name, phoneNumber, password, role });
+
+This will show you exactly what's being sent.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 CHECKLIST - GO THROUGH THESE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In VS Code (Frontend):
+
+[ ] 1. .env file exists in project root
+[ ] 2. .env has correct API_URL variable for your framework
+[ ] 3. .env value is: https://sitara-hotel-backend.onrender.com
+[ ] 4. Frontend dev server was RESTARTED after .env changes
+[ ] 5. API service file reads from .env correctly
+[ ] 6. Register endpoint is: ${API_URL}/auth/register
+[ ] 7. Request has Content-Type: application/json header
+[ ] 8. Request body includes: email, name, phoneNumber, password, role
+[ ] 9. Browser console shows no CORS errors
+[ ] 10. Network tab shows request going to correct URL
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 EXAMPLE WORKING CODE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+// .env file (in frontend root)
+REACT_APP_API_URL=https://sitara-hotel-backend.onrender.com
+
+// API service file (e.g., src/services/api.js)
+const API_URL = process.env.REACT_APP_API_URL;
+
+export const registerUser = async (userData) => {
+  try {
+    const response = await fetch(`${API_URL}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Register error:', error);
+    throw error;
+  }
+};
+
+// In your Register component
+const handleRegister = async (e) => {
+  e.preventDefault();
+
+  try {
+    const result = await registerUser({
+      email: email,
+      name: name,
+      phoneNumber: phoneNumber,
+      password: password,
+      role: 'USER'
+    });
+
+    console.log('Registration successful:', result);
+    // Redirect to login or show success message
+  } catch (error) {
+    console.error('Registration failed:', error);
+    // Show error message to user
+  }
+};
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🆘 STILL NOT WORKING?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Share this information with VS Code Copilot:
+
+"My backend is at https://sitara-hotel-backend.onrender.com
+The register endpoint is working (tested with curl).
+When I click Register in my frontend, nothing happens.
+
+Please check:
+1. My .env file configuration
+2. My API service file
+3. My register component
+4. Browser console for errors"
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ BACKEND CONFIRMED WORKING!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Backend URL: https://sitara-hotel-backend.onrender.com
+Register endpoint: ✅ WORKING (tested successfully)
+Login endpoint: ✅ WORKING
+CORS: ✅ ENABLED
+Database: ✅ CONNECTED (Aiven MySQL)
+
+The issue is 100% in the frontend configuration.
+Fix the .env file and restart your dev server!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+

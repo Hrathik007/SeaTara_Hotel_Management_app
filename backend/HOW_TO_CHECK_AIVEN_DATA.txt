@@ -1,0 +1,275 @@
+╔════════════════════════════════════════════════════════════════════════╗
+║           HOW TO CHECK DATA IN AIVEN MYSQL DATABASE                     ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+There are 3 ways to view your data in Aiven MySQL:
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 METHOD 1: AIVEN WEB CONSOLE (Easiest - GUI)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: Login to Aiven Console
+─────────────────────────────────────────────────────────────────────────
+1. Go to: https://console.aiven.io/login
+2. Login with your credentials
+3. You'll see your services dashboard
+
+STEP 2: Open Your MySQL Service
+─────────────────────────────────────────────────────────────────────────
+1. Click on "sitara-hotel-mysql" (or your service name)
+2. Wait for status to show "RUNNING" (green)
+
+STEP 3: Use Query Editor (If Available)
+─────────────────────────────────────────────────────────────────────────
+Some Aiven plans include a built-in query editor:
+1. Look for "Query" or "Query Editor" tab
+2. If available, you can run SQL queries directly
+
+Example queries:
+```sql
+-- See all users
+SELECT * FROM users;
+
+-- See all rooms
+SELECT * FROM rooms;
+
+-- See all bookings
+SELECT * FROM bookings;
+
+-- Count users
+SELECT COUNT(*) as total_users FROM users;
+
+-- See user roles
+SELECT email, role FROM users;
+```
+
+⚠️ NOTE: Free tier may not have Query Editor. Use Method 2 or 3 instead.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💻 METHOD 2: MySQL COMMAND LINE (From Your Computer)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: Get Connection Details from Aiven
+─────────────────────────────────────────────────────────────────────────
+1. Login to Aiven Console: https://console.aiven.io
+2. Click on your "sitara-hotel-mysql" service
+3. Go to "Overview" tab
+4. Find "Connection information" section
+5. Copy these values:
+   - Host: sitara-hotel-mysql-xxxxx.aivencloud.com
+   - Port: 12345 (example)
+   - User: avnadmin
+   - Password: AVNS_xxxxxxxxx
+   - Database: defaultdb
+
+STEP 2: Install MySQL Client (If not installed)
+─────────────────────────────────────────────────────────────────────────
+On macOS:
+```bash
+brew install mysql-client
+```
+
+On Windows:
+Download from: https://dev.mysql.com/downloads/mysql/
+
+STEP 3: Connect to Aiven MySQL
+─────────────────────────────────────────────────────────────────────────
+Using the values from Step 1, run:
+
+```bash
+mysql -h [HOST] -P [PORT] -u avnadmin -p --ssl-mode=REQUIRED defaultdb
+```
+
+Example:
+```bash
+mysql -h sitara-hotel-mysql-xxxxx.aivencloud.com -P 12345 -u avnadmin -p --ssl-mode=REQUIRED defaultdb
+```
+
+When prompted, enter your Aiven MySQL password.
+
+STEP 4: Run SQL Queries
+─────────────────────────────────────────────────────────────────────────
+Once connected, you can run:
+
+```sql
+-- Show all tables
+SHOW TABLES;
+
+-- See all users
+SELECT * FROM users;
+
+-- See admin user
+SELECT * FROM users WHERE email = 'admin@sitara.com';
+
+-- See all rooms
+SELECT * FROM rooms;
+
+-- Count bookings
+SELECT COUNT(*) FROM bookings;
+
+-- Exit
+EXIT;
+```
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔧 METHOD 3: GUI TOOLS (MySQL Workbench, DBeaver, etc.)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OPTION A: MySQL Workbench (Official MySQL GUI)
+─────────────────────────────────────────────────────────────────────────
+1. Download: https://dev.mysql.com/downloads/workbench/
+2. Install and open MySQL Workbench
+3. Click "+" to add new connection
+4. Enter connection details:
+   - Connection Name: Sitara Hotel Aiven
+   - Hostname: [Your Aiven host]
+   - Port: [Your Aiven port]
+   - Username: avnadmin
+   - Password: [Click "Store in Keychain" and enter password]
+   - Default Schema: defaultdb
+5. Click "SSL" tab
+   - Use SSL: Yes
+   - SSL Mode: REQUIRED
+6. Click "Test Connection"
+7. If successful, click "OK"
+8. Double-click connection to connect
+9. Run queries in SQL Editor
+
+OPTION B: DBeaver (Universal Database Tool - Recommended)
+─────────────────────────────────────────────────────────────────────────
+1. Download: https://dbeaver.io/download/
+2. Install and open DBeaver
+3. Click "New Database Connection"
+4. Select "MySQL"
+5. Enter connection details:
+   - Server Host: [Your Aiven host]
+   - Port: [Your Aiven port]
+   - Database: defaultdb
+   - Username: avnadmin
+   - Password: [Your Aiven password]
+6. Click "SSL" tab
+   - Use SSL: Yes
+   - Verify server certificate: No (for free tier)
+7. Click "Test Connection"
+8. Click "Finish"
+9. Expand connection → defaultdb → Tables
+10. Right-click table → View Data
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 METHOD 4: QUICK API TEST (Check via Backend)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This doesn't directly access Aiven, but verifies your backend can read data:
+
+TEST 1: Get All Rooms
+─────────────────────────────────────────────────────────────────────────
+```bash
+curl https://sitara-hotel-backend.onrender.com/rooms/all
+```
+
+TEST 2: Login (checks if users exist)
+─────────────────────────────────────────────────────────────────────────
+```bash
+curl -X POST https://sitara-hotel-backend.onrender.com/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@sitara.com",
+    "password": "admin123"
+  }'
+```
+
+If you get data back, your Aiven database has the data!
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 USEFUL SQL QUERIES FOR YOUR DATABASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-- See all tables in database
+SHOW TABLES;
+
+-- View table structure
+DESCRIBE users;
+DESCRIBE rooms;
+DESCRIBE bookings;
+
+-- Count records in each table
+SELECT COUNT(*) as total_users FROM users;
+SELECT COUNT(*) as total_rooms FROM rooms;
+SELECT COUNT(*) as total_bookings FROM bookings;
+
+-- See all users with their roles
+SELECT id, email, name, role, phone_number FROM users;
+
+-- See all rooms with prices
+SELECT id, room_type, room_price, room_description FROM rooms;
+
+-- See all bookings
+SELECT b.id, b.booking_confirmation_code, u.email, r.room_type,
+       b.check_in_date, b.check_out_date
+FROM bookings b
+JOIN users u ON b.user_id = u.id
+JOIN rooms r ON b.room_id = r.id;
+
+-- Find specific user
+SELECT * FROM users WHERE email = 'admin@sitara.com';
+
+-- Delete specific user (BE CAREFUL!)
+DELETE FROM users WHERE email = 'test@example.com';
+
+-- Update user password (hashed - don't do this manually)
+-- Let the backend handle password updates
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚡ QUICK CHECK RIGHT NOW (Easiest)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Run this command in your terminal to see if data exists:
+
+```bash
+curl https://sitara-hotel-backend.onrender.com/rooms/all | jq '.'
+```
+
+If you see rooms data, your Aiven database is working!
+
+Test admin login:
+```bash
+curl -X POST https://sitara-hotel-backend.onrender.com/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@sitara.com","password":"admin123"}' | jq '.'
+```
+
+If you get a token, the admin user exists in Aiven!
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔐 YOUR AIVEN CONNECTION DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+To get your specific connection details:
+1. Login: https://console.aiven.io
+2. Click: "sitara-hotel-mysql" service
+3. Look for: "Connection information" section
+4. You'll see:
+   - Service URI (full connection string)
+   - Host
+   - Port
+   - User
+   - Password
+   - Database
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 RECOMMENDED: Use Method 2 (MySQL Command Line) or Method 3 (DBeaver)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DBeaver is the easiest for beginners - free, GUI, and works with all databases.
+
+Download: https://dbeaver.io/download/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+

@@ -1,0 +1,29 @@
+# Copy this EXACT content to your frontend .env file
+
+# ============================================================
+# BACKEND API URL - Sitara Hotel on Render
+# ============================================================
+
+# IMPORTANT: Choose ONE of these based on your framework:
+
+# If using Create React App (most common):
+REACT_APP_API_URL=https://sitara-hotel-backend.onrender.com
+
+# If using Vite:
+VITE_API_URL=https://sitara-hotel-backend.onrender.com
+
+# If using Next.js:
+NEXT_PUBLIC_API_URL=https://sitara-hotel-backend.onrender.com
+
+# ============================================================
+# AFTER CREATING THIS FILE:
+# ============================================================
+# 1. STOP your dev server (Ctrl+C in terminal)
+# 2. RESTART: npm start (or npm run dev)
+# 3. Try registering again
+# ============================================================
+
+# NOTE: .env file should be in your project ROOT folder
+# Same level as package.json
+# ============================================================
+
